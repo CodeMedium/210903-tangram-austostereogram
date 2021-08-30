@@ -24,12 +24,13 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
 function setup() {
   // Param args
   params = Object.assign({
-    pixelSize: 3
+    pixelSize: 2,
+    tileSize: 128
   }, getURLParams())
-  // rectMode(CENTER)
 
 	createCanvas(windowWidth, windowHeight)
-  tile = createGraphics(300, 300)
+  tile = createGraphics(params.tileSize, params.tileSize)
+  depthMap = createGraphics(windowWidth, windowHeight)
 
   drawScene()
 }
@@ -40,10 +41,19 @@ function setup() {
 function drawScene () {
   background(0)
   noStroke()
-  tile.background(0)
+
+  drawTiles()
+  drawDepthMap()
+}
+
+/**
+ * Create the magic tiles
+ */
+function drawTiles () {
+  tile.clear()
   tile.noStroke()
 
-  // Noise
+  // Draw the tile
   for (let x = 0; x < 300 / params.pixelSize; x++) {
     for (let y = 0; y < 300 / params.pixelSize; y++) {
       tile.fill(random(255), random(255), random(255))
@@ -51,28 +61,44 @@ function drawScene () {
     }
   }
 
-  image(tile, 0, 0)
-  
+  // Draw two blank columns
+  for (let i = 0; i < height / params.tileSize; i++) {
+    image(tile, 0, i * params.tileSize)
+    image(tile, params.tileSize, i * params.tileSize)
+  }
+}
+
+/**
+ * Draws the depthmap
+ */
+function drawDepthMap () {
+  depthMap.clear()
+  depthMap.noStroke()
+
   // Text
-  fill(255, 255, 255)
-  translate(0, -100)
-  textSize(100)
-  textAlign(CENTER, CENTER)
-  textStyle(BOLD)
-  text('Hello World', width / 2, height / 2)
-  translate(0, 200)
+  depthMap.push()
+  depthMap.fill(255, 255, 255)
+  depthMap.translate(0, -100)
+  depthMap.textSize(100)
+  depthMap.textAlign(CENTER, CENTER)
+  depthMap.textStyle(BOLD)
+  depthMap.text('Hello World', width / 2, height / 2)
+  depthMap.translate(0, 200)
 
   // Triangle
-  translate(-250, 0)
-  triangle(width / 2, height / 2 - 100, width / 2 + 100, height / 2 + 100, width / 2 - 100, height / 2 + 100)
+  depthMap.translate(-250, 0)
+  depthMap.triangle(width / 2, height / 2 - 100, width / 2 + 100, height / 2 + 100, width / 2 - 100, height / 2 + 100)
 
   // Square
-  translate(250, 0)
-  rect(width / 2 - 100, height / 2 - 100, 200, 200)
+  depthMap.translate(250, 0)
+  depthMap.rect(width / 2 - 100, height / 2 - 100, 200, 200)
 
   // Circle
-  translate(250, 0)
-  circle(width / 2, height / 2, 200)
+  depthMap.translate(250, 0)
+  depthMap.circle(width / 2, height / 2, 200)
+  depthMap.pop()
+
+  image(depthMap, 0, 0)
 }
 
 /**
@@ -116,6 +142,9 @@ function keyPressed () {
  * 
  * @see https://github.com/CodeMedium/subdivided-starships
  */
+function mouseClicked () {
+  drawScene()
+}
 const keypressFn = [function () {
   drawScene()
   

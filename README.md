@@ -1,6 +1,10 @@
 # Austostereogram
 An exploration into "Magic Eye" style images
 
+```js
+?pixelSize=2&tileSize=128
+```
+
 ## CCapture to mp4 with spacebar
 
 Uncomment `ccapturer` line in `index.html` to enable. Then press Space to start recording the canvas into an mp4
