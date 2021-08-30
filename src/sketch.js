@@ -23,20 +23,38 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
  */
 function setup() {
   // Param args
-  params = Object.assign({}, getURLParams())
-  rectMode(CENTER)
+  params = Object.assign({
+    pixelSize: 3
+  }, getURLParams())
+  // rectMode(CENTER)
 
 	createCanvas(windowWidth, windowHeight)
+  tile = createGraphics(300, 300)
+
+  drawScene()
 }
 
 /**
- * Main draw loop
+ * Draws the scene once
  */
-function draw() {
+function drawScene () {
   background(0)
-  fill(255, 255, 255)
+  noStroke()
+  tile.background(0)
+  tile.noStroke()
 
+  // Noise
+  for (let x = 0; x < 300 / params.pixelSize; x++) {
+    for (let y = 0; y < 300 / params.pixelSize; y++) {
+      tile.fill(random(255), random(255), random(255))
+      tile.rect(x * params.pixelSize, y * params.pixelSize, params.pixelSize, params.pixelSize)
+    }
+  }
+
+  image(tile, 0, 0)
+  
   // Text
+  fill(255, 255, 255)
   translate(0, -100)
   textSize(100)
   textAlign(CENTER, CENTER)
@@ -50,12 +68,17 @@ function draw() {
 
   // Square
   translate(250, 0)
-  rect(width / 2, height / 2, 200, 200)
+  rect(width / 2 - 100, height / 2 - 100, 200, 200)
 
   // Circle
   translate(250, 0)
   circle(width / 2, height / 2, 200)
 }
+
+/**
+ * Main draw loop
+ */
+function draw() {}
 
 /**
  * Returns a color in colors
@@ -94,6 +117,8 @@ function keyPressed () {
  * @see https://github.com/CodeMedium/subdivided-starships
  */
 const keypressFn = [function () {
+  drawScene()
+  
   switch (keyCode) {
     // Space
     case 32:

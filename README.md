@@ -1,5 +1,5 @@
-# p5-starter
-A minimal p5.js starter kit with the following features:
+# Austostereogram
+An exploration into "Magic Eye" style images
 
 ## CCapture to mp4 with spacebar
 
