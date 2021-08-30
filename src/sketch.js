@@ -25,12 +25,16 @@ function setup() {
   // Param args
   params = Object.assign({
     pixelSize: 2,
-    tileSize: 128
+    tileSize: 128,
+    intensity: 0.25
   }, getURLParams())
 
 	createCanvas(windowWidth, windowHeight)
   tile = createGraphics(params.tileSize, params.tileSize)
   depthMap = createGraphics(windowWidth, windowHeight)
+  pixelDensity(1)
+  tile.pixelDensity(1)
+  depthMap.pixelDensity(1)
 
   drawScene()
 }
@@ -42,48 +46,77 @@ function drawScene () {
   background(0)
   noStroke()
 
-  drawTiles()
   drawDepthMap()
+  drawTiles()
+  // image(depthMap, 0, 0)
 }
 
 /**
  * Create the magic tiles
+ * @see https://github.com/vpoupet/playground
  */
 function drawTiles () {
   tile.clear()
   tile.noStroke()
 
   // Draw the tile
-  for (let x = 0; x < 300 / params.pixelSize; x++) {
-    for (let y = 0; y < 300 / params.pixelSize; y++) {
+  for (let x = 0; x < parseInt(params.tileSize) / parseInt(params.pixelSize); x++) {
+    for (let y = 0; y < parseInt(params.tileSize) / parseInt(params.pixelSize); y++) {
       tile.fill(random(255), random(255), random(255))
-      tile.rect(x * params.pixelSize, y * params.pixelSize, params.pixelSize, params.pixelSize)
+      tile.rect(x * parseInt(params.pixelSize), y * parseInt(params.pixelSize), parseInt(params.pixelSize), parseInt(params.pixelSize))
     }
   }
 
+  // Get depth map data
+  let depthData = depthMap.drawingContext.getImageData(0, 0, windowWidth, windowHeight)
+
   // Draw two blank columns
-  for (let i = 0; i < height / params.tileSize; i++) {
-    image(tile, 0, i * params.tileSize)
-    image(tile, params.tileSize, i * params.tileSize)
+  // for (let i = 0; i < height / params.tileSize; i++) {
+  //   image(tile, 0, i * params.tileSize)
+  //   image(tile, params.tileSize, i * params.tileSize)
+  // }
+  for (let i = 0; i < windowHeight; i += parseInt(params.tileSize)) {
+    drawingContext.drawImage(tile.canvas, 0, i);
+    drawingContext.drawImage(tile.canvas, parseInt(params.tileSize), i);
   }
+
+  // Draw the rest of the austostereogram
+  let imageData = drawingContext.getImageData(0, 0, windowWidth, windowHeight)
+
+  // make stereogram
+  for (let y = 0; y < windowHeight; y++) {
+    for (let x = 0; x < windowWidth; x++) {
+      let shift = ~~(depthData.data[4 * (x + windowWidth * y)] * parseFloat(params.intensity)) - parseInt(params.tileSize)
+      if (0 <= x + shift && x + shift < windowWidth) {
+        let offset = (x + windowWidth * y) << 2
+        let offset_shift = (x + shift + windowWidth * y) << 2
+        imageData.data[offset] = imageData.data[offset_shift]
+        imageData.data[offset + 1] = imageData.data[offset_shift + 1]
+        imageData.data[offset + 2] = imageData.data[offset_shift + 2]
+        imageData.data[offset + 3] = 255
+      }
+    }
+  }
+
+  drawingContext.putImageData(imageData, 0, 0)
 }
 
 /**
  * Draws the depthmap
  */
 function drawDepthMap () {
-  depthMap.clear()
+  depthMap.background(0)
   depthMap.noStroke()
 
   // Text
   depthMap.push()
-  depthMap.fill(255, 255, 255)
-  depthMap.translate(0, -100)
-  depthMap.textSize(100)
-  depthMap.textAlign(CENTER, CENTER)
-  depthMap.textStyle(BOLD)
-  depthMap.text('Hello World', width / 2, height / 2)
-  depthMap.translate(0, 200)
+  // depthMap.fill(200, 200, 200)
+  // depthMap.translate(0, -100)
+  // depthMap.textSize(100)
+  // depthMap.textAlign(CENTER, CENTER)
+  // depthMap.textStyle(BOLD)
+  // depthMap.text('Hello World', width / 2, height / 2)
+  // depthMap.translate(0, 200)
 
   // Triangle
   depthMap.translate(-250, 0)
@@ -97,8 +130,6 @@ function drawDepthMap () {
   depthMap.translate(250, 0)
   depthMap.circle(width / 2, height / 2, 200)
   depthMap.pop()
-
-  image(depthMap, 0, 0)
 }
 
 /**

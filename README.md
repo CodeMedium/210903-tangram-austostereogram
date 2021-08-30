@@ -2,7 +2,7 @@
 An exploration into "Magic Eye" style images
 
 ```js
-?pixelSize=2&tileSize=128
+?pixelSize=2&tileSize=128&intensity=0.25
 ```
 
 ## CCapture to mp4 with spacebar
