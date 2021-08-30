@@ -23,9 +23,8 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
  */
 function setup() {
   // Param args
-  params = Object.assign({
-
-  }, getURLParams())
+  params = Object.assign({}, getURLParams())
+  rectMode(CENTER)
 
 	createCanvas(windowWidth, windowHeight)
 }
@@ -34,6 +33,28 @@ function setup() {
  * Main draw loop
  */
 function draw() {
+  background(0)
+  fill(255, 255, 255)
+
+  // Text
+  translate(0, -100)
+  textSize(100)
+  textAlign(CENTER, CENTER)
+  textStyle(BOLD)
+  text('Hello World', width / 2, height / 2)
+  translate(0, 200)
+
+  // Triangle
+  translate(-250, 0)
+  triangle(width / 2, height / 2 - 100, width / 2 + 100, height / 2 + 100, width / 2 - 100, height / 2 + 100)
+
+  // Square
+  translate(250, 0)
+  rect(width / 2, height / 2, 200, 200)
+
+  // Circle
+  translate(250, 0)
+  circle(width / 2, height / 2, 200)
 }
 
 /**
