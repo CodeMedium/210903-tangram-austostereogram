@@ -1,15 +1,10 @@
 /**
- * Title
+ * Austostereogram - Basic 🔺🟥🔴
  * Started: 8/22/21
- * By: Art See Clarke
+ * Oz Ramos @TheCodeMedium
  * Twitter: https://twitter.com/thecodemedium
  * GitHub: https://github.com/codemedium
  * Personal website: https://codemedium.com
- *
- * 		 "Any sufficiently advanced technology is indistinguishable from magic"
- * 		 - Arthur C. Clarke
- *
- * Description: 
  */
 
 /**
@@ -24,9 +19,9 @@ colors = ['#ffffff', '#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D
 function setup() {
   // Param args
   params = Object.assign({
-    pixelSize: 2,
+    pixelSize: 4,
     tileSize: 128,
-    intensity: 0.25
+    intensity: 0.05
   }, getURLParams())
 
 	createCanvas(windowWidth, windowHeight)
@@ -48,7 +43,7 @@ function drawScene () {
 
   drawDepthMap()
   drawTiles()
-  // image(depthMap, 0, 0)
+  image(depthMap, windowWidth - windowWidth / 6, windowHeight - windowHeight / 6, windowWidth / 6, windowHeight / 6)
 }
 
 /**
@@ -71,13 +66,9 @@ function drawTiles () {
   let depthData = depthMap.drawingContext.getImageData(0, 0, windowWidth, windowHeight)
 
   // Draw two blank columns
-  // for (let i = 0; i < height / params.tileSize; i++) {
-  //   image(tile, 0, i * params.tileSize)
-  //   image(tile, params.tileSize, i * params.tileSize)
-  // }
-  for (let i = 0; i < windowHeight; i += parseInt(params.tileSize)) {
-    drawingContext.drawImage(tile.canvas, 0, i);
-    drawingContext.drawImage(tile.canvas, parseInt(params.tileSize), i);
+  for (let i = 0; i < height / params.tileSize; i++) {
+    image(tile, 0, i * params.tileSize)
+    image(tile, params.tileSize, i * params.tileSize)
   }
 
   // Draw the rest of the austostereogram
@@ -110,13 +101,6 @@ function drawDepthMap () {
 
   // Text
   depthMap.push()
-  // depthMap.fill(200, 200, 200)
-  // depthMap.translate(0, -100)
-  // depthMap.textSize(100)
-  // depthMap.textAlign(CENTER, CENTER)
-  // depthMap.textStyle(BOLD)
-  // depthMap.text('Hello World', width / 2, height / 2)
-  // depthMap.translate(0, 200)
 
   // Triangle
   depthMap.translate(-250, 0)
