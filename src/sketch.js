@@ -1,6 +1,6 @@
 /**
  * Austostereogram - Basic 🔺🟥🔴
- * Started: 8/22/21
+ * Started: 8/29/21
  * Oz Ramos @TheCodeMedium
  * Twitter: https://twitter.com/thecodemedium
  * GitHub: https://github.com/codemedium
@@ -25,7 +25,7 @@ function setup() {
   }, getURLParams())
 
 	createCanvas(windowWidth, windowHeight)
-  tile = createGraphics(params.tileSize, params.tileSize)
+  tile = createGraphics(parseInt(params.tileSize), parseInt(params.tileSize))
   depthMap = createGraphics(windowWidth, windowHeight)
   pixelDensity(1)
   tile.pixelDensity(1)
@@ -65,25 +65,23 @@ function drawTiles () {
   // Get depth map data
   let depthData = depthMap.drawingContext.getImageData(0, 0, windowWidth, windowHeight)
 
-  // Draw two blank columns
-  for (let i = 0; i < height / params.tileSize; i++) {
-    image(tile, 0, i * params.tileSize)
-    image(tile, params.tileSize, i * params.tileSize)
+  // Draw two blank columns to use for shifting
+  for (let i = 0; i < height / parseInt(params.tileSize); i++) {
+    image(tile, 0, i * parseInt(params.tileSize))
+    image(tile, parseInt(params.tileSize), i * parseInt(params.tileSize))
   }
-
-  // Draw the rest of the austostereogram
   let imageData = drawingContext.getImageData(0, 0, windowWidth, windowHeight)
 
-  // make stereogram
+  // Create the austostereogram
   for (let y = 0; y < windowHeight; y++) {
     for (let x = 0; x < windowWidth; x++) {
-      let shift = ~~(depthData.data[4 * (x + windowWidth * y)] * parseFloat(params.intensity)) - parseInt(params.tileSize)
+      let shift = Math.floor(depthData.data[4 * (x + windowWidth * y)] * parseFloat(params.intensity)) - parseInt(params.tileSize)
       if (0 <= x + shift && x + shift < windowWidth) {
         let offset = (x + windowWidth * y) << 2
-        let offset_shift = (x + shift + windowWidth * y) << 2
-        imageData.data[offset] = imageData.data[offset_shift]
-        imageData.data[offset + 1] = imageData.data[offset_shift + 1]
-        imageData.data[offset + 2] = imageData.data[offset_shift + 2]
+        let offsetShift = (x + shift + windowWidth * y) << 2
+        imageData.data[offset] = imageData.data[offsetShift]
+        imageData.data[offset + 1] = imageData.data[offsetShift + 1]
+        imageData.data[offset + 2] = imageData.data[offsetShift + 2]
         imageData.data[offset + 3] = 255
       }
     }
