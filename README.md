@@ -18,3 +18,7 @@ All functions passed into this array will be called when p5 calls `keyPressed()`
 ## `getColor(transparentAmountHex)`
 
 Returns a random color from `colors`
+
+# Acknowledgements
+
+This work was inspired and derived from this project: https://github.com/vpoupet/playground
