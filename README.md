@@ -7,6 +7,9 @@ An exploration into "Magic Eye" style images
 ?pixelSize=2&tileSize=128&intensity=0.05
 ```
 
+---
+
+# Dev
 ## CCapture to mp4 with spacebar
 
 Uncomment `ccapturer` line in `index.html` to enable. Then press Space to start recording the canvas into an mp4
@@ -18,6 +21,8 @@ All functions passed into this array will be called when p5 calls `keyPressed()`
 ## `getColor(transparentAmountHex)`
 
 Returns a random color from `colors`
+
+---
 
 # Acknowledgements
 
