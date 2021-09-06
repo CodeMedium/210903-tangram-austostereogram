@@ -1,10 +1,17 @@
 /**
- * Austostereogram - Basic 🔺🟥🔴
- * Started: 8/29/21
- * Oz Ramos @TheCodeMedium
+ * Generative Tangrams generating Austostereogram
+ * Started: 9/03/21
+ * Oz Ramos "Art See Clarke"
+ * ---
  * Twitter: https://twitter.com/thecodemedium
+ * Ko-Fi: https://ko-fi.com/handsfreejs
+ * Pinterest: https://www.pinterest.com/codemedium/
  * GitHub: https://github.com/codemedium
- * Personal website: https://codemedium.com
+ *---
+ * (∩｀-´)⊃━☆ﾟ.*･｡ﾟ 		 "Any sufficiently advanced technology is indistinguishable from magic"
+ * 		                    - Arthur C. Clarke
+ *---
+ * SETTINGS: Edit params in setup()
  */
 
 /**
@@ -19,6 +26,7 @@ bg = '#000000'
  */
 function setup() {
   // Param args
+	// Params don't work on OP yet, so manually change these
   params = Object.assign({
     pixelSize: 4,
     tileSize: 128,
@@ -38,7 +46,7 @@ function setup() {
   tile.rectMode(CENTER)
   depthMap.angleMode(DEGREES)
   depthMap.rectMode(CENTER)
-
+	
   curDrawCanvas = tile
 
   drawScene()
