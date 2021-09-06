@@ -1,7 +1,6 @@
 # Austostereogram
 An exploration into "Magic Eye" style images
-
-!["Magic Eye" styled austostereogram](https://user-images.githubusercontent.com/89111078/131412344-39c6f498-e103-4496-8917-dbf78671c87d.png)
+!["Magic Eye" styled austostereogram](https://user-images.githubusercontent.com/89111078/132152782-f96a5631-cacd-468d-b17b-df5fb327e916.png)
 
 ```js
 ?pixelSize=2&tileSize=128&intensity=0.05
